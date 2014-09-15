@@ -1,7 +1,7 @@
 run: compile
-	qemu boot.bin
+	qemu bin/boot.bin
 
-compile: boot_sect.asm kernel.asm
-	nasm boot_sect.asm -f bin -o boot_sect.bin
-	nasm kernel.asm -f bin -o kernel.bin
-	cat boot_sect.bin kernel.bin > boot.bin
+compile: src/boot_sect.asm src/kernel.asm
+	nasm src/boot_sect.asm -f bin -o bin/boot_sect.bin
+	nasm src/kernel.asm -f bin -o bin/kernel.bin
+	cat bin/boot_sect.bin bin/kernel.bin > bin/boot.bin
