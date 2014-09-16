@@ -1,25 +1,52 @@
 [org 0x7c00]
-[bits 16]
-start:
+boot:
+    KERNEL_OFFSET equ 0x1000
+
     mov [BOOT_DRIVE], dl
 
-    mov bp, 0x8000
+    mov bp, 0x9000
     mov sp, bp
 
-    mov bx, 0x9000
-    mov dh, 10
+    mov si, message2
+    call print_string
+
+    call load_kernel
+
+    call switch_to_pm
+
+    jmp $
+
+%include "lib/disk_load.asm"
+%include "lib/gdt.asm"
+%include "lib/pm_print.asm"
+%include "lib/switch_to_pm.asm"
+
+[bits 16]
+load_kernel:
+    mov si, load_message
+    call print_string
+
+    mov bx, KERNEL_OFFSET
+    mov dh, 15
     mov dl, [BOOT_DRIVE]
     call disk_load
 
-    call 0x9000
+    ret
 
-    jmp $ 
+[bits 32]
+BEGIN_PM:
+    mov ebx, message
+    call print_string_pm
 
-%include "lib/disk_load.asm"
+    call KERNEL_OFFSET
 
-message db "test", 0
+    jmp $
+
 BOOT_DRIVE db 0
-  
+message db "It's working FUCKING GREAT",0
+message2 db "In real mode...", 0
+load_message db "Loading kernel...", 0
+ 
 times 510-($-$$) db 0
 dw 0xaa55
 
