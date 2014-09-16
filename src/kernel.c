@@ -1,21 +1,39 @@
-void main()
+#define VIDEO_MEMORY_ADDRESS 0Xb8000
+char* cur_pos = (char*) VIDEO_MEMORY_ADDRESS;
+
+void print(char* message)
 {
-    char* video_memory = (char*) 0xb8000;
-    char* message = "Fuck yeah!";
-    
+    while(*message != 0)
+    {
+        if(*message == '\n')
+        {
+            cur_pos =  0xb8000 + ((((int)cur_pos - 0xb8000) / 160 + 1)*160);
+        }
+        else
+        {
+            *cur_pos = *message;
+            cur_pos+=2;
+        }
+        
+        message++;
+    }
+}
+
+void clear()
+{
+    char* video_memory = (char*) VIDEO_MEMORY_ADDRESS;
     int i;
-    for(i=0;i<800;i++)
+    for(i=0;i<4000;i++)
     {
         *video_memory = ' ';
         video_memory += 2;
     }
-    
-    video_memory = (char*) 0xb8000;
-    while(*message != 0)
-    {
-        *video_memory = *message;
-        video_memory+=2;
-        message++;
-    }
+}
 
+void main()
+{
+    
+    clear();
+    print("OK");
+    
 }
