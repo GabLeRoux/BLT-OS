@@ -8,7 +8,8 @@ void main()
 {
     
     clear();
-    print_string("Enter command>");
+    //print_string("Enter command>");
+    /*
     char* prev_key = get_key_string();
     char waited = 0;
     while(1)
@@ -37,5 +38,6 @@ void main()
         }
         prev_key = key;
     }
+    */
     
 }

@@ -10,6 +10,10 @@ boot:
     mov si, message2
     call print_string
 
+    mov ah, 0x01
+    mov cx, 0x2607
+    int 0x10
+
     call load_kernel
 
     call switch_to_pm

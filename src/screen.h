@@ -27,18 +27,18 @@ void print_char(char c)
     if(c == '\n')
     {
         cur_pos =  (char*) VIDEO_MEMORY_ADDRESS + ((((int)cur_pos - VIDEO_MEMORY_ADDRESS) / (VIDEO_COLUMNS * BYTES_PER_CHAR) + 1)*(VIDEO_COLUMNS * BYTES_PER_CHAR));
-        if(cur_pos >= (char*) VIDEO_ADDRESS_END)
-        {
-            screen_up();
-            cur_pos -= VIDEO_COLUMNS * BYTES_PER_CHAR;
-        }
+
     }
     else
     {
         *cur_pos = c;
         cur_pos += BYTES_PER_CHAR;
     }
-
+    if(cur_pos >= (char*) VIDEO_ADDRESS_END)
+    {
+        screen_up();
+        cur_pos -= VIDEO_COLUMNS * BYTES_PER_CHAR;
+    }
 }
 
 void print_string(char* message)
