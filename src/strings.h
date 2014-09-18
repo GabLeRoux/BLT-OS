@@ -1,3 +1,6 @@
+#ifndef STRINGS_H
+#define STRINGS_H
+
 char compare_strings(char* s1, char* s2)
 {
     while(*s1 != '\0')
@@ -49,3 +52,4 @@ void concatenate_strings(char* s1, char* s2, char* out)
     *out = '\0';
     
 }
+#endif

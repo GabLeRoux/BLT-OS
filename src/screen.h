@@ -1,3 +1,6 @@
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include "math.h"
 
 #define VIDEO_MEMORY_ADDRESS 0Xb8000
@@ -71,3 +74,4 @@ void clear()
         video_memory += BYTES_PER_CHAR;
     }
 }
+#endif

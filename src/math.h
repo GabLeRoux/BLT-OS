@@ -1,3 +1,5 @@
+#ifndef MATH_H
+#define MATH_H
 int count_digits(int n)
 {
     int c = 1;
@@ -19,3 +21,4 @@ int pow(int n, int p)
     }
     return result;
 }
+#endif

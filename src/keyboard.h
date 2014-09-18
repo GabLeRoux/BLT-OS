@@ -1,3 +1,5 @@
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
 #include "asm_io.h"
 
 char get_key_scancode()
@@ -81,9 +83,17 @@ char* get_key_string()
             return "8";
         case 0x0a:
             return "9";
+        case 0x0c:
+            return "-";
+        case 0x1c:
+            return "\n";
+        case 0x39:
+            return " ";
+        case 0x0e:
+            return "BKSP";
         default:
-            return "nope";
+            return "unknown";
     }
 }
 
-
+#endif
