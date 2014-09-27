@@ -1,3 +1,6 @@
+%ifndef PM_PRINT
+%define PM_PRINT
+
 [bits 32]
 VIDEO_MEMORY equ 0xb8000
 WHITE_ON_BLACK equ 0x0f
@@ -23,3 +26,5 @@ print_string_pm_loop:
 print_string_pm_done:
     popa
     ret
+
+%endif

@@ -1,3 +1,6 @@
+%ifndef DISK_LOAD
+%define DISK_LOAD
+
 %include "lib/strings.asm"
 
 disk_load:
@@ -23,3 +26,5 @@ DISK_ERROR:
     jmp $
 
 DISK_ERROR_MESSAGE db "Erreur de lecture de disque...", 0
+
+%endif

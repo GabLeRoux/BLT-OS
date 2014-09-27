@@ -44,7 +44,7 @@ BEGIN_PM:
 
     call KERNEL_OFFSET
 
-    jmp $
+    hlt
 
 BOOT_DRIVE db 0
 message db "It's working FUCKING GREAT",0

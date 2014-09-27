@@ -51,8 +51,6 @@ void print_string(char* message)
     }
 }
 
-
-
 void print_int(int n)
 { 
     int i;
@@ -74,4 +72,11 @@ void clear()
         video_memory += BYTES_PER_CHAR;
     }
 }
+
+void delete_char()
+{
+    cur_pos -= BYTES_PER_CHAR; 
+    *cur_pos = ' ';
+}
+
 #endif

@@ -1,3 +1,6 @@
+%ifndef GDT
+%define GDT
+
 gdt_start:
 
 gdt_null:
@@ -28,3 +31,5 @@ gdt_descriptor:
 
 CODE_SEG equ gdt_code - gdt_start
 DATA_SEG equ gdt_data - gdt_start
+
+%endif
