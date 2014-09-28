@@ -1,7 +1,11 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
+#include "strings.h"
+#include "memory.h"
+
 #define NUMBER_OF_COMMANDS 2
+
 
 extern char exit_shell;
 
@@ -34,10 +38,14 @@ char** parse_command(char* command, int* argc)
 {
     typedef enum{START, COMMAND, ARGS, LITERAL} state;
     int current_cursor = 0;
+    char** temp = (char**)malloc(length_string(command));
+    return temp;
+    /*
     while(command[current_cursor] != 0)
     {
         
     }
+    */
 }
 
 #endif

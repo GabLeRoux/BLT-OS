@@ -40,6 +40,7 @@ void process_command()
 {
    int argc;
    char **args = parse_command(command, &argc);
+   print_string(args[0]);
 
    unsigned int i;
    for(i=0; i<NUMBER_OF_COMMANDS; i++)
