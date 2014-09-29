@@ -1,6 +1,8 @@
 #ifndef STRINGS_H
 #define STRINGS_H
 
+#include "memory.h"
+
 char compare_strings(char* s1, char* s2)
 {
     while(*s1 != '\0')
@@ -51,5 +53,19 @@ void concatenate_strings(char* s1, char* s2, char* out)
     }
     *out = '\0';
     
+}
+
+char* substring(char* string, int start, int end)
+{
+    char* result = (char*) malloc(end - start + 2);
+    char* temp = result;
+    int i;
+    for(i=start; i<=end; i++)
+    {
+        *result = string[i];
+        result++;
+    }
+    *result = 0;
+    return temp;
 }
 #endif

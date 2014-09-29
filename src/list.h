@@ -3,6 +3,7 @@
 
 #include "screen.h"
 #include "memory.h"
+#include "error.h"
 
 typedef struct list_node
 {
@@ -28,53 +29,17 @@ list* list_create()
     return l;
 }
 
-list_node* list_push(list* l, void* data)
+unsigned int list_size(list* l)
 {
-    list_node* ln = malloc(sizeof(list_node));
-    if(l->count == 0)
-    {
-        l->first = ln;
-        ln->next = 0;
-        ln->prev = 0;
-    }
-    else
-    {
-        ln->next = l->last->next;
-        ln->prev = l->last;
-        l->last->next = ln;
-    }
-    ln->data = data;
-    l->last= ln;
-    
-    l->count++;
-    return ln;
-}
-
-void list_pop(list* l)
-{
-    if(l->last == 0)
-    {
-        print_string("Error: Popping empty list");
-        return;
-    }
-    list_node* new_last = l->last->prev;
-    list_node* last = l->last;
-    void* data = last->data;
-    if(new_last != 0)
-    {
-        new_last->next = 0;
-    }
-    l->last = new_last;
-    l->count--;
-    free(last);
-    
+    return l->count;
 }
 
 void* list_get(list* l, int pos)
 {
     if(pos >= l->count)
     {
-        print_string("Error: invalid list get position");
+        error_string = "Error: invalid list get position";
+        print_string(error_string);
         return;
     }
     list_node* ln = l->first;
@@ -87,42 +52,50 @@ void* list_get(list* l, int pos)
     
 }
 
-unsigned int list_size(list* l)
-{
-    return l->count;
-}
-
 void list_insert(list* l, void* new_data, int pos)
 {
     if(pos > l->count) 
     {
-        print_string("Error: invalid list insert position");
+        error_string = "Error: invalid list insert position";
+        print_string(error_string);
         return;
     }
-    if(pos == l->count)
-    {
-        list_push(l, new_data);
-        return;
-    }
-    list_node* ln = l->first;
-    int i;
-    for(i=0; i<pos; i++)
-    {
-        ln = ln->next;
-    }
+    
     list_node* new_node = malloc(sizeof(list_node));
-    new_node->prev = ln->prev;
-    new_node->next = ln;
     new_node->data = new_data;
-    if(pos == 0)
+    if(l->count == 0)
     {
+        l->last = new_node;
         l->first = new_node;
+        new_node->prev = new_node->next = 0;
+    }
+    else if(pos == 0)
+    {
+        new_node->next = l->first;
+        new_node->prev = 0;
+        l->first->prev = new_node;
+        l->first = new_node;
+    }
+    else if(pos == l->count)
+    {
+        new_node->prev = l->last; 
+        new_node->next = 0;
+        l->last->next = new_node;
+        l->last = new_node;
     }
     else
     {
+        list_node* ln = l->first;
+        int i;
+        for(i=0; i<pos; i++)
+        {
+            ln = ln->next;
+        }
+        new_node->next = ln;
+        new_node->prev = ln->prev;
         ln->prev->next = new_node;
+        ln->prev = new_node;
     }
-    ln->prev = new_node;
     l->count++;
 }
 
@@ -130,7 +103,8 @@ void list_delete(list* l, int pos)
 {
     if(pos >= l->count)
     {
-        print_string("Error: invalid list delete position");
+        error_string = "Error: invalid list delete position";
+        print_string(error_string);
         return;
     }
     list_node* ln = l->first;
@@ -162,7 +136,7 @@ void list_delete(list* l, int pos)
     l->count--;
 }
 
-int list_find(list* l, void* value, char (*cmp)(void*,void*))
+int list_find_with_func(list* l, void* value, char (*cmp)(void*,void*))
 {
     list_node* ln = l->first;
     int i;
@@ -172,6 +146,49 @@ int list_find(list* l, void* value, char (*cmp)(void*,void*))
         ln = ln->next;
     }
     return -1;
+}
+
+char compare_bytes(void* value, void* data, int bytes)
+{
+    char equal = 1;
+    char* c_val = (char*) value;
+    char* c_dat = (char*) data;
+    int i;
+    for(i=0; i<bytes; i++, c_val++, c_dat++)
+    {
+	if(*c_val != *c_dat)
+        {
+            return 0;
+        }        
+    }
+    return equal;
+}
+
+int list_find(list* l, void* value, int bytes)
+{
+    list_node* ln = l->first;
+    int i;
+    for(i=0; i<(l->count); i++)
+    {
+        if(compare_bytes(value, ln->data, bytes)) return i;
+        ln = ln->next;
+    }
+    return -1;
+}
+
+void* list_peek(list* l)
+{
+    return list_get(l, l->count - 1);
+}
+
+void list_push(list* l, void* data)
+{
+    list_insert(l, data, l->count);
+}
+
+void list_pop(list* l)
+{
+     list_delete(l, l->count - 1);  
 }
 
 void list_free(list* l)

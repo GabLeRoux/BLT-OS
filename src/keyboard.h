@@ -14,6 +14,8 @@ typedef enum{
     KEY_8,
     KEY_9,
 
+    KEY_SPACE,
+
     KEY_A,
     KEY_B,
     KEY_C,
@@ -44,7 +46,6 @@ typedef enum{
     KEY_ENTER,
     KEY_RSHIFT,
     KEY_LSHIFT,
-    KEY_SPACE,
     KEY_BKSP,
     KEY_RCTRL,
     KEY_LCTRL,
@@ -486,6 +487,16 @@ KEY get_key_symbol(unsigned char key)
             key_status = UP;
             return KEY_BKSP;
         }
+        case 0x39:
+        {
+            key_status = DOWN;
+            return KEY_SPACE;
+        }
+        case 0xb9:
+        {
+            key_status = UP;
+            return KEY_SPACE;
+        }
 
         default:
         {
@@ -536,6 +547,8 @@ char key_sym_to_char(KEY key)
         case KEY_X: return 'x';
         case KEY_Y: return 'y';
         case KEY_Z: return 'z';
+
+        case KEY_SPACE: return ' ';
         default: return KEY_UNKNOWN;
     }
 }

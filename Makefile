@@ -2,6 +2,7 @@ run: compile
 	qemu bin/boot.bin
 
 compile: src/boot_sect.asm src/kernel.c
+	mkdir -p bin
 	nasm src/boot_sect.asm -f bin -o bin/boot_sect.bin
 	nasm src/kernel_entry.asm -f elf -o bin/kernel_entry.o
 	gcc -m32 -ffreestanding -c src/kernel.c -o bin/kernel.o

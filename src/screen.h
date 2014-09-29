@@ -51,7 +51,7 @@ void print_string(char* message)
     }
 }
 
-void print_int(int n)
+void print_unsigned_int(unsigned int n)
 { 
     int i;
     for(i=count_digits(n)-1;i>=0;i--)
@@ -60,6 +60,16 @@ void print_int(int n)
        print_char(n/p + '0');
        n %= p;
     }
+}
+
+void print_int(int n)
+{ 
+    if(n < 0)
+    {
+        print_char('-');
+        print_unsigned_int(-n);
+    }
+    else print_unsigned_int(n);
 }
 
 void clear()

@@ -19,7 +19,7 @@ void print_prompt()
 
 void process_key(KEY key)
 {
-    if(key >= 0 && key <=35)
+    if(key >= KEY_0 && key <= KEY_Z)
     {
         char key_char = key_sym_to_char(key);
         print_char(key_char);
@@ -34,14 +34,20 @@ void process_key(KEY key)
         command_cursor--;
         command[command_cursor] = ' ';
     }
+    else if(key == KEY_ENTER)
+    {
+        char key_char = '\n';
+        print_char(key_char);
+        command[command_cursor] = key_char;
+        command_cursor++;
+        command[command_cursor] = 0;
+    }
 }
 
 void process_command()
 {
    int argc;
    char **args = parse_command(command, &argc);
-   print_string(args[0]);
-
    unsigned int i;
    for(i=0; i<NUMBER_OF_COMMANDS; i++)
    {
@@ -67,9 +73,8 @@ void start_shell()
             process_key(next_key);
             next_key = get_next_key_pressed();
         }
-        print_string("\n");
+        process_key(next_key);
         process_command();
-        print_string("\n");
         command_cursor = 0;
     }
     print_string("Exit command. Goodbye!");
